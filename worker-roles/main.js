@@ -13,7 +13,7 @@ module.exports.loop = function () {
         }
     }
 
-// Replace lost workers
+// Spawner
     var workers = _.filter(Game.creeps, (creep) => creep.memory.type == 'worker');
     if(workers.length < workersTargetNr) {
         var newName = 'Worker' + Game.time;
@@ -31,6 +31,9 @@ module.exports.loop = function () {
             Game.spawns['Spawn1'].pos.y,
             {align: 'left', opacity: 0.8});
     }
+
+// Role changer
+    
 
 // Tower control
     var tower = Game.getObjectById('TOWER_ID');
