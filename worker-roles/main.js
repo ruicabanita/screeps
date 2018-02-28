@@ -3,6 +3,7 @@ var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
 var spawnControl = require('Spawn.Control');
 var roleControl = require('Role.Control');
+var towerControl = require('Tower.Control');
 
 module.exports.loop = function () {
 
@@ -16,22 +17,7 @@ module.exports.loop = function () {
 
 spawnControl.run();
 roleControl.run();    
-
-// Tower control
-    var tower = Game.getObjectById('TOWER_ID');
-    if(tower) {
-        var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
-            filter: (structure) => structure.hits < structure.hitsMax
-        });
-        if(closestDamagedStructure) {
-            tower.repair(closestDamagedStructure);
-        }
-
-        var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
-        if(closestHostile) {
-            tower.attack(closestHostile);
-        }
-    }
+towerControl.run();
 
 // Creep role modules
     for(var name in Game.creeps) {
