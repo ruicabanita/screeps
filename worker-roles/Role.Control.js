@@ -16,10 +16,17 @@ var impHar = sourcesCount * energyMissingPercent;
 console.log('impHar = ' + impHar);
 var impUpg = 50;
 var impTotal = impHar + impUpg;
-
+var impRelHar = impHar/impTotal;
+var impRelUpg = impUpg/impTotal;
 var myCreeps = Game.spawns['Spawn1'].room.find(FIND_MY_CREEPS);
 var myCreepsCount = myCreeps.length;
 console.log('myCreepsCount = ' + myCreepsCount);
+var myWorkers = _.filter(Game.creeps, (creep) => creep.memory.type == 'worker');
+console.log("myWorkers = " + myWorkers);
+var myWorkersCount = myWorkers.length;
+var harNr = Math.round(myWorkersCount*impRelHar);
+var upgNr = Math.round(myWorkersCount*impRelUpg);
+console.log('harNr:upgNr = ' + harNr + ':' + upgNr );
 
 module.exports = {
     run() {
