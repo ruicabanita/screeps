@@ -27,6 +27,8 @@ var myWorkersCount = myWorkers.length;
 var harNr = Math.round(myWorkersCount*impRelHar);
 var upgNr = Math.round(myWorkersCount*impRelUpg);
 console.log('harNr:upgNr = ' + harNr + ':' + upgNr );
+var changedMemory = 0;
+var workerRoles = ['harvester', 'upgrader'];
 
 module.exports = {
     run() {
@@ -35,7 +37,15 @@ module.exports = {
                 Game.creeps[name].memory.role = 'upgrader';
                 console.log('setting role upgrader:', name);
             }
-            
+        }
+        for(var i = 0; i < myWorkersCount; i+=1){
+            var worker = myWorkers[i];
+            if(changedMemory < harNr){
+                worker.memory.role = workerRoles[0];
+            } else if (changedMemory < harNr + upgNr) {
+                worker.memory.role = workerRoles[1];
+            }
+        changedMemory +=1;    
         }
     }    
 };
