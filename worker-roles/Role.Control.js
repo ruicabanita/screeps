@@ -11,9 +11,11 @@
 var sources = Game.spawns['Spawn1'].room.find(FIND_SOURCES_ACTIVE);
 var sourcesCount = sources.length;
 console.log('Sources = ' + sourcesCount);
-var energyMissingPercent = (1-(Game.spawns['Spawn1'].room.energyAvailable)/(Game.spawns['Spawn1'].room.energyCapacityAvailable))*100;
+var tower1 = Game.getObjectById('5a78b236e1955974d193175d');
+var room1 = Game.spawns['Spawn1'].room;
+var energyMissingPercent = (1-(room1.energyAvailable + tower1.energy)/(room1.energyCapacityAvailable + tower1.energyCapacity))*100;
 console.log('energyMissing(%) = ' + Math.round(energyMissingPercent));
-var impHar = sourcesCount * energyMissingPercent;
+var impHar = sourcesCount * energyMissingPercent * 2;
 
 // Workers | Upgraders
 var impUpg = 50;
