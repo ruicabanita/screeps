@@ -1,4 +1,4 @@
-console.log('beep!')
+console.log('beep2!')
 var roleHarvester = require('role.harvester');
 var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
