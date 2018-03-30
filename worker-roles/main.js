@@ -1,4 +1,4 @@
-console.log('beep2!')
+console.log('beep!')
 var roleHarvester = require('role.harvester');
 var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
@@ -16,11 +16,10 @@ module.exports.loop = function () {
         }
     }
 
-spawnControl.run();
-roleControl.run();    
-towerControl.run();
+    spawnControl.run();
 
-// Creep role modules
+// Creep roles
+    roleControl.run();
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
         if(creep.memory.role == 'harvester') {
@@ -32,5 +31,12 @@ towerControl.run();
         if(creep.memory.role == 'builder') {
             roleBuilder.run(creep);
         }
+    }
+
+    for(const id in Game.structures) {
+        var structure = Game.structures[id];
+        if (structure.structureType == 'tower'){
+            towerControl.run(structure);
+        }   
     }
 }

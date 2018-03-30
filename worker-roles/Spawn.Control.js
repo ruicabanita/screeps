@@ -2,7 +2,7 @@ module.exports = {
     
     run() {
         
-        var workersTargetNr = 6;
+        var workersTargetNr = 9;
         var workers = _.filter(Game.creeps, (creep) => creep.memory.type == 'worker');
         
         if(workers.length < workersTargetNr) {

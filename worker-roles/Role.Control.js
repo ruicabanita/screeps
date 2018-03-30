@@ -12,8 +12,9 @@ var sources = Game.spawns['Spawn1'].room.find(FIND_SOURCES_ACTIVE);
 var sourcesCount = sources.length;
 console.log('Sources = ' + sourcesCount);
 var tower1 = Game.getObjectById('5a78b236e1955974d193175d');
+var tower2 = Game.getObjectById('5aac56f1922bbc6d1f4998b9');
 var room1 = Game.spawns['Spawn1'].room;
-var energyMissingPercent = (1-(room1.energyAvailable + tower1.energy)/(room1.energyCapacityAvailable + tower1.energyCapacity))*100;
+var energyMissingPercent = (1-(room1.energyAvailable + tower1.energy + tower2.energy)/(room1.energyCapacityAvailable + tower1.energyCapacity + tower2.energyCapacity))*100;
 console.log('energyMissing(%) = ' + Math.round(energyMissingPercent));
 var impHar = sourcesCount * energyMissingPercent * 2;
 
@@ -33,7 +34,7 @@ for(var i = 0; i < damagedStructuresCount; i+=1){
     totalStructureHitpoints = totalStructureHitpoints + damagedStructure.hitsMax;
 }
 var missingStructureHitpointsPercentage = (missingStructureHitpoints / totalStructureHitpoints)*100;
-var impBld = 50 * cSitesCount + missingStructureHitpointsPercentage;
+var impBld = 50 * cSitesCount + missingStructureHitpointsPercentage + 20;
 console.log('Construction Sites | Missing Structure Hitpoints(%)= ' + cSitesCount + ' | ' + missingStructureHitpointsPercentage);
 
 // Proportions

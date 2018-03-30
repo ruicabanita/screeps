@@ -13,14 +13,14 @@ var roleBuilder = {
         }
 
         if(creep.memory.building) {
-            var buildTargets = creep.room.find(FIND_CONSTRUCTION_SITES);
-            var repairTargets = creep.room.find(FIND_MY_STRUCTURES, {
+            var buildTargets = Game.spawns['Spawn1'].room.find(FIND_CONSTRUCTION_SITES);
+            var repairTargets = Game.spawns['Spawn1'].room.find(FIND_MY_STRUCTURES, {
             filter: (structure) => structure.hits < structure.hitsMax
         });
-            var wallsToFortify = creep.room.find(FIND_STRUCTURES, {
-            filter: (!repairTargets)});
-            wallsToFortify.sort((a,b) => a.hits - b.hits);
-            var wallsToFortifyCount = wallsToFortify.length;
+            var fortifyTargets = Game.spawns['Spawn1'].room.find(FIND_STRUCTURES, {
+            filter: (structure) => structure.hits < structure.hitsMax
+        });
+            fortifyTargets.sort(function(a,b){return a.hits - b.hits});
             if(buildTargets.length) {
                 if(creep.build(buildTargets[0]) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(buildTargets[0], {visualizePathStyle: {stroke: '#ffffff'}});
@@ -30,9 +30,9 @@ var roleBuilder = {
                 if(creep.repair(repairTargets[0]) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(repairTargets[0], {visualizePathStyle: {stroke: '#ff0000'}});
                 }
-            } else if (wallsToFortify.length){
-                if(creep.repair(wallsToFortify[0]) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(wallsToFortify[0], {visualizePathStyle: {stroke: '#00ff00'}});
+            } else if (fortifyTargets.length){
+                if(creep.repair(fortifyTargets[0]) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(fortifyTargets[0], {visualizePathStyle: {stroke: '#00ff00'}});
                 }
             }
         }
