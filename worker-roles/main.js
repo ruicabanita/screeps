@@ -2,6 +2,7 @@ console.log('beep!')
 var roleHarvester = require('role.harvester');
 var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
+var roleSoldier = require('role.soldier');
 var spawnControl = require('Spawn.Control');
 var roleControl = require('Role.Control');
 var towerControl = require('Tower.Control');
@@ -29,6 +30,9 @@ module.exports.loop = function () {
             roleUpgrader.run(creep);
         }
         if(creep.memory.role == 'builder') {
+            roleBuilder.run(creep);
+        }
+        if(creep.memory.role == 'soldier') {
             roleBuilder.run(creep);
         }
     }
