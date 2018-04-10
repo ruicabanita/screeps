@@ -13,8 +13,9 @@ var sourcesCount = sources.length;
 console.log('Sources = ' + sourcesCount);
 var tower1 = Game.getObjectById('5a78b236e1955974d193175d');
 var tower2 = Game.getObjectById('5aac56f1922bbc6d1f4998b9');
+var storage1 = Game.getObjectById('5accd8bfa019f614e51d7efa');
 var room1 = Game.spawns['Spawn1'].room;
-var energyMissingPercent = (1-(room1.energyAvailable + tower1.energy + tower2.energy)/(room1.energyCapacityAvailable + tower1.energyCapacity + tower2.energyCapacity))*100;
+var energyMissingPercent = (1-(room1.energyAvailable + tower1.energy + tower2.energy + storage1.store[RESOURCE_ENERGY])/(room1.energyCapacityAvailable + tower1.energyCapacity + tower2.energyCapacity + storage1.storeCapacity * .01))*100;
 console.log('energyMissing(%) = ' + Math.round(energyMissingPercent));
 var impHar = sourcesCount * energyMissingPercent * 5;
 
@@ -39,7 +40,7 @@ for(var i = 0; i < damagedStructuresCount; i+=1){
     totalStructureHitpoints = totalStructureHitpoints + damagedStructure.hitsMax;
 };
 var missingStructureHitpointsPercentage = (missingStructureHitpoints / totalStructureHitpoints)*100;
-var impBld = 30 * (cSitesMissingProgress / 200) + missingStructureHitpointsPercentage + 20;
+var impBld = 30 * (cSitesMissingProgress / 100) + missingStructureHitpointsPercentage + 20;
 console.log('Construction Sites | Missing Structure Hitpoints(%)= ' + cSitesCount + ' | ' + missingStructureHitpointsPercentage);
 
 // Proportions
@@ -51,11 +52,13 @@ var myCreeps = Game.spawns['Spawn1'].room.find(FIND_MY_CREEPS);
 var myCreepsCount = myCreeps.length;
 var myWorkers = _.filter(Game.creeps, (creep) => creep.memory.type == 'worker');
 var myWorkersCount = myWorkers.length;
-console.log('Workers:Soldiers = ' + myWorkersCount + ':0');
+var mySoldiers = _.filter(Game.creeps, (creep) => creep.memory.type == 'soldier');
+var mySoldiersCount = mySoldiers.length;
+console.log('Workers:Soldiers = ' + myWorkersCount + ':' + mySoldiersCount);
 var harNr = Math.round((myWorkersCount -1) * impRelHar);
 var upgNr = 1 + Math.round((myWorkersCount -1) * impRelUpg);
 var bldNr = Math.round((myWorkersCount -1) * impRelBld);
-console.log('Harversters:Upgraders:Builders = ' + harNr + ':' + upgNr + ':' + bldNr);
+Memory.roleproportions = {harNr, upgNr, bldNr};
 var changedMemory = 0;
 var workerRoles = ['harvester', 'upgrader', 'builder'];
 

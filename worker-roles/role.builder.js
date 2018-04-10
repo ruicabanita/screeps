@@ -3,16 +3,7 @@ var roleBuilder = {
     /** @param {Creep} creep **/
     run: function(creep) {
 
-        if(creep.memory.building && creep.carry.energy == 0) {
-            creep.memory.building = false;
-            creep.say('🔄 harvest');
-        }
-        if(!creep.memory.building && creep.carry.energy == creep.carryCapacity) {
-            creep.memory.building = true;
-            creep.say('🚧 build');
-        }
-
-        if(creep.memory.building) {
+        if(creep.memory.working) {
             var buildTargets = Game.spawns['Spawn1'].room.find(FIND_CONSTRUCTION_SITES);
             var repairTargets = Game.spawns['Spawn1'].room.find(FIND_MY_STRUCTURES, {
             filter: (structure) => structure.hits < structure.hitsMax

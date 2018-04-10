@@ -14,14 +14,14 @@ module.exports = {
         filter: (structure) => structure.hits < structure.hitsMax});
         repairTargets.sort(function(a,b){return a.hits - b.hits});
         var fortifyTargets = tower.room.find(FIND_STRUCTURES, {
-        filter: (structure) => structure.hits < structure.hitsMax});
+        filter: function(structure){return structure.hits < structure.hitsMax && structure.structureType == 'road'}});
         fortifyTargets.sort(function(a,b){return a.hits - b.hits});
         if(closestHostile) {
             tower.attack(closestHostile);
         } else if(repairTargets.length && tower.energy/tower.energyCapacity > .5){
             tower.repair(repairTargets[0]);
-        /* } else if(fortifyTargets.length && tower.energy/tower.energyCapacity > .95){
-            tower.repair(fortifyTargets[0]); */
+        } else if(fortifyTargets.length && tower.energy/tower.energyCapacity > .95){
+            tower.repair(fortifyTargets[0]);
         };
     }
 };

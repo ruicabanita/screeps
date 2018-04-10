@@ -1,4 +1,5 @@
 console.log('beep!')
+var typeWorker = require('type.worker');
 var roleHarvester = require('role.harvester');
 var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
@@ -23,6 +24,9 @@ module.exports.loop = function () {
     roleControl.run();
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
+        if(creep.memory.type == 'worker'){
+            typeWorker.run(creep);
+        }
         if(creep.memory.role == 'harvester') {
             roleHarvester.run(creep);
         }
