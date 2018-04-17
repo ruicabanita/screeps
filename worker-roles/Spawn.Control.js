@@ -2,18 +2,19 @@ module.exports = {
     
     run() {
         
-        var workersTargetNr = 9;
-        var soldiersTargetNr = 0;
         var workers = _.filter(Game.creeps, (creep) => creep.memory.type == 'worker');
         var soldiers = _.filter(Game.creeps, (creep) => creep.memory.type == 'soldier');
         var enemies = Game.spawns['Spawn1'].room.find(FIND_HOSTILE_CREEPS);
         
         
         if(enemies.length){
-            soldiersTargetNr = enemies.length;
+            Memory.memoryVariables.soldiersTargetNr = enemies.length;
         } else {
-            soldiersTargetNr = 0;
+            Memory.memoryVariables.soldiersTargetNr = 0;
         }
+        
+        var workersTargetNr = Memory.memoryVariables.workersTargetNr;
+        var soldiersTargetNr = Memory.memoryVariables.soldiersTargetNr;
         
         if(workers.length < workersTargetNr && Game.spawns['Spawn1'].room.energyAvailable >= 200) {
             var newName = 'Worker' + Game.time;

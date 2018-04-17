@@ -20,7 +20,7 @@ module.exports = {
             tower.attack(closestHostile);
         } else if(repairTargets.length && tower.energy/tower.energyCapacity > .5){
             tower.repair(repairTargets[0]);
-        } else if(fortifyTargets.length && tower.energy/tower.energyCapacity > .95){
+        } else if(fortifyTargets.length && tower.energy/tower.energyCapacity > .8){
             tower.repair(fortifyTargets[0]);
         };
     }

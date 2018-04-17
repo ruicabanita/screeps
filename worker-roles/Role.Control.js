@@ -10,21 +10,24 @@
 // Workers | Harversters
 var sources = Game.spawns['Spawn1'].room.find(FIND_SOURCES_ACTIVE);
 var sourcesCount = sources.length;
-console.log('Sources = ' + sourcesCount);
+Memory.memoryVariables.sourcesCount=sourcesCount;
 var tower1 = Game.getObjectById('5a78b236e1955974d193175d');
 var tower2 = Game.getObjectById('5aac56f1922bbc6d1f4998b9');
 var storage1 = Game.getObjectById('5accd8bfa019f614e51d7efa');
 var room1 = Game.spawns['Spawn1'].room;
-var energyMissingPercent = (1-(room1.energyAvailable + tower1.energy + tower2.energy + storage1.store[RESOURCE_ENERGY])/(room1.energyCapacityAvailable + tower1.energyCapacity + tower2.energyCapacity + storage1.storeCapacity * .01))*100;
-console.log('energyMissing(%) = ' + Math.round(energyMissingPercent));
-var impHar = sourcesCount * energyMissingPercent * 5;
+var energy1MissingPercent = (1-(room1.energyAvailable + tower1.energy + tower2.energy)/(room1.energyCapacityAvailable + tower1.energyCapacity + tower2.energyCapacity))*100;
+var energy2MissingPercent = (1-Math.round((storage1.store[RESOURCE_ENERGY])/(storage1.storeCapacity * .01)))*100;
+Memory.memoryVariables.energy1MissingPercent = Math.round(energy1MissingPercent);
+Memory.memoryVariables.energy2MissingPercent = Math.round(energy2MissingPercent);
+var impHar = sourcesCount * energy1MissingPercent * 5 + sourcesCount * energy2MissingPercent;
 
 // Workers | Upgraders
-var impUpg = 50;
+var impUpg = 10;
 
 // Workers | Builders
 var cSites = Game.spawns['Spawn1'].room.find(FIND_CONSTRUCTION_SITES);
 var cSitesCount = cSites.length;
+Memory.memoryVariables.cSitesCount = cSitesCount;
 var cSitesMissingProgress = 0;
 for(const id in Game.constructionSites){
     var cSite = Game.constructionSites[id];
@@ -40,11 +43,14 @@ for(var i = 0; i < damagedStructuresCount; i+=1){
     totalStructureHitpoints = totalStructureHitpoints + damagedStructure.hitsMax;
 };
 var missingStructureHitpointsPercentage = (missingStructureHitpoints / totalStructureHitpoints)*100;
-var impBld = 30 * (cSitesMissingProgress / 100) + missingStructureHitpointsPercentage + 20;
-console.log('Construction Sites | Missing Structure Hitpoints(%)= ' + cSitesCount + ' | ' + missingStructureHitpointsPercentage);
+var impBld = (cSitesMissingProgress / 30) + (missingStructureHitpointsPercentage * 10) + 10;
+Memory.memoryVariables.missingStructureHitpointsPercentage = missingStructureHitpointsPercentage;
 
 // Proportions
 var impTotal = impHar + impUpg + impBld;
+Memory.memoryVariables.impHar = impHar;
+Memory.memoryVariables.impUpg = impUpg;
+Memory.memoryVariables.impBld = impBld;
 var impRelHar = impHar/impTotal;
 var impRelUpg = impUpg/impTotal;
 var impRelBld = impBld/impTotal;
@@ -54,7 +60,8 @@ var myWorkers = _.filter(Game.creeps, (creep) => creep.memory.type == 'worker');
 var myWorkersCount = myWorkers.length;
 var mySoldiers = _.filter(Game.creeps, (creep) => creep.memory.type == 'soldier');
 var mySoldiersCount = mySoldiers.length;
-console.log('Workers:Soldiers = ' + myWorkersCount + ':' + mySoldiersCount);
+Memory.memoryVariables.myWorkersCount = myWorkersCount;
+Memory.memoryVariables.mySoldiersCount = mySoldiersCount;
 var harNr = Math.round((myWorkersCount -1) * impRelHar);
 var upgNr = 1 + Math.round((myWorkersCount -1) * impRelUpg);
 var bldNr = Math.round((myWorkersCount -1) * impRelBld);
@@ -67,7 +74,6 @@ module.exports = {
         for(var name in Game.creeps) {
             if(!Game.creeps[name].memory.role) {
                 Game.creeps[name].memory.role = 'upgrader';
-                console.log('setting role upgrader:', name);
             }
         }
         for(var i = 0; i < myWorkersCount; i+=1){

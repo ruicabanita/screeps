@@ -41,10 +41,12 @@ module.exports.loop = function () {
         }
     }
 
-    for(const id in Game.structures) {
-        var structure = Game.structures[id];
-        if (structure.structureType == 'tower'){
-            towerControl.run(structure);
-        }   
+//Command towers starting with the ones with the most energy aquired
+    var towers = _.filter(Game.structures, (structure) => structure.structureType == 'tower');
+    towers.sort(function(a,b){return b.energy - a.energy});
+
+    for(var i=0; i < towers.length; i++ ) {
+        var tower = towers[i];
+        towerControl.run(tower);
     }
 }
